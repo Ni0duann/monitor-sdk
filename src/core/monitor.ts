@@ -13,7 +13,7 @@ export class Monitor {
 
   private init(): void {
     // 初始化错误监听
-    console.log('初始化监听');
+    console.log('初始化监听。。。');
     
     // 可以添加其他初始化逻辑
   }
