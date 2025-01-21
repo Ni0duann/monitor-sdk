@@ -1,6 +1,5 @@
 export interface MonitorOptions {
   reportUrl: string; // 上报地址
-  delay?: number; // 上报延迟
 }
 
 // 定义监控事件接口

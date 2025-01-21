@@ -1,10 +1,9 @@
 // 引入打包后的 SDK
-import { Monitor } from '../dist/index.js';  // 根据实际打包输出路径调整
+import { Monitor } from '../dist/index.esm.js';  // 使用 esm 版本
 
 // 测试实例化
 try {
   const monitor = new Monitor({
-    reportUrl: 'http://localhost:7001/api/monitor',
     delay: 1000
   });
   

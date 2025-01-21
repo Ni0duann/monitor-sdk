@@ -1,6 +1,6 @@
 {
-  "name": "@ni0duann/monitor-sdk",
-  "version": "1.0.1",
+  "name": "monitor-sdk",
+  "version": "1.0.0",
   "description": "前端监控SDK",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -21,10 +21,6 @@
     "sdk"
   ],
   "author": "",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ni0duann/monitor-sdk.git"
-  },
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.0",
