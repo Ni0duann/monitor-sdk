@@ -4,6 +4,7 @@ import { Monitor } from '../dist/index.js';  // 根据实际打包输出路径�
 // 测试实例化
 try {
   const monitor = new Monitor({
+    reportUrl: 'http://localhost:7001/api/monitor',
     delay: 1000
   });
   
