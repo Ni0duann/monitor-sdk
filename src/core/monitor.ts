@@ -20,7 +20,7 @@ export class Monitor {
 
 
     // 上报数据, 传入上报地址、数据、延迟时间
-    reportData(this.options.reportUrl, this.queue, this.options.delay); 
+    reportData({ url: this.options.reportUrl, data: this.queue, delay: this.options.delay }); 
     
     // 可以添加其他初始化逻辑
   }
