@@ -3,9 +3,9 @@
 前端监控 SDK
 
 ## 安装
-<font color="red"> 暂时未发布，需要手动安装 </font>
+<font color="red"> 已经发布，下面这行命令可以安装 </font>
 
-```npm install monitor-sdk```
+```npm i @ni0duann/monitor-sdk ```
 
 ## 环境测试
 ```
@@ -14,7 +14,7 @@
 ```
 
 ## 使用方法
-```javascript
+```typescript jacscript
 import Monitor from 'monitor-sdk';
 
 const monitor = new Monitor({
