@@ -1,14 +1,5 @@
-interface reportDataInterface {
-    url: string;
-    data: any;
-    time?: Date;
-    delay?: any;
-}
-
-
 // 定义数据上报函数
-function reportData(options: reportDataInterface) {
-    const { url, data, delay = 1000, time = Date.now() } = options;
+function reportData(url: string, data: any, delay: number = 0) {
     setTimeout(() => {
         fetch(url, {
             method: 'POST',

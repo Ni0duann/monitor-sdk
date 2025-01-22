@@ -27,4 +27,18 @@ const monitor = new Monitor({
 - 性能监控
 - 用户行为监控
 
-## API 文档
+## 项目架构
+monitor-sdk/
+├── src/
+│   ├── index.ts              // 入口文件
+│   ├── core/                 // 核心功能
+│   │   ├── monitor.ts       // 监控器主类
+│   │   └── types.ts         // 类型定义
+│   ├── plugins/             // 插件模块
+│   │   ├── error/          // 错误监控
+│   │   ├── performance/    // 性能监控
+│   │   └── behavior/       // 用户行为监控
+│   └── utils/              // 工具函数
+├── test/                   // 测试文件
+├── examples/               // 使用示例
+└── docs/                  // 文档
