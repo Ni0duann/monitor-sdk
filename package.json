@@ -1,6 +1,6 @@
 {
   "name": "@ni0duann/monitor-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "前端监控SDK",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
