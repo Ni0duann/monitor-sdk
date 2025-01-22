@@ -28,17 +28,17 @@ const monitor = new Monitor({
 - 用户行为监控
 
 ## 项目架构
-monitor-sdk/
-├── src/
-│   ├── index.ts              // 入口文件
-│   ├── core/                 // 核心功能
-│   │   ├── monitor.ts       // 监控器主类
-│   │   └── types.ts         // 类型定义
-│   ├── plugins/             // 插件模块
-│   │   ├── error/          // 错误监控
-│   │   ├── performance/    // 性能监控
-│   │   └── behavior/       // 用户行为监控
-│   └── utils/              // 工具函数
-├── test/                   // 测试文件
-├── examples/               // 使用示例
-└── docs/                  // 文档
+monitor-sdk/</br>
+├── src/</br>
+│   ├── index.ts              // 入口文件</br>
+│   ├── core/                 // 核心功能</br>
+│   │   ├── monitor.ts       // 监控器主类</br>
+│   │   └── types.ts         // 类型定义</br>
+│   ├── plugins/             // 插件模块</br>
+│   │   ├── error/          // 错误监控</br>
+│   │   ├── performance/    // 性能监控</br>
+│   │   └── behavior/       // 用户行为监控</br>
+│   └── utils/              // 工具函数</br>
+├── test/                   // 测试文件</br>
+├── examples/               // 使用示例</br>
+└── docs/                  // 文档</br>
