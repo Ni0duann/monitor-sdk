@@ -1,4 +1,5 @@
 //导入类型定义
+import { PerformanceMonitor } from '../plugins/performance';
 import { MonitorOptions, MonitorEvent } from './types';
 
 export class Monitor {
@@ -20,9 +21,11 @@ export class Monitor {
 
 
     // 上报数据, 传入上报地址、数据、延迟时间
-    reportData({ url: this.options.reportUrl, data: this.queue, delay: this.options.delay }); 
+    // todo
+    // reportData({ url: this.options.reportUrl, data: this.queue, delay: this.options.delay }); 
     
-    // 可以添加其他初始化逻辑
+    // 初始化性能监控
+    PerformanceMonitor.init();
   }
 
 }
