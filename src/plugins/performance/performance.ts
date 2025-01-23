@@ -1,13 +1,7 @@
 import { observeLCP } from './lcp';
-import { observeFCP } from './fcp';
-import { observeResourceLoading } from './resource';
-import { observeNavigationTiming } from './navagation'; // 修正拼写错误
 
-export class PerformanceMonitor {
-  private lcpMetrics: { lcp?: any } = {};
-  private fcpMetrics: { fcp?: any[] } = {};
-  private resourceMetrics: { resources?: any[] } = {};
-  private navigationMetrics: { navigation?: any } = {};
+export class performance {
+  private metrics: { lcp?: any } = {};
   private observers: PerformanceObserver[] = [];
 
   constructor() {
@@ -15,26 +9,10 @@ export class PerformanceMonitor {
   }
 
   private init(): void {
-    observeLCP(this.lcpMetrics, this.observers);
-    observeFCP(this.fcpMetrics, this.observers);
-    observeResourceLoading(this.resourceMetrics, this.observers);
-    observeNavigationTiming(this.navigationMetrics, this.observers);
-
+    observeLCP(this.metrics, this.observers);
   }
 
-  public getMetrics(): [
-    { lcp?: any },
-    { fcp?: any[] },
-    { resources?: any[] },
-    { navigation?: any },
-
-  ] {
-    return [
-      this.lcpMetrics,
-      this.fcpMetrics,
-      this.resourceMetrics,
-      this.navigationMetrics,
-    ];
+  public getMetrics(): { lcp?: any } {
+    return this.metrics;
   }
-
 }
