@@ -2,6 +2,20 @@
 
 前端监控 SDK
 
+## 功能特性
+
+ - [ ] 监控 JavaScript 异常
+ - [ ] 监控 Promise 异常 
+ - [ ] 监控 console.error 异常
+ - [ ] 监控 resource 异常 
+ - [ ] 监控跨域异常 
+ - [ ] 监控白屏异常 
+ - [ ] 监控接口异常 
+ - [ ] 监控页面路由跳转 
+ - [ ] 监控页面性能 
+ - [ ] 监控网站信息 
+ - [ ] 监控用户行为
+
 ## 安装
 <font color="red"> 已经发布，下面这行命令可以安装 </font>
 
@@ -11,6 +25,7 @@
 ```
   pnpm run build
   node test/test.js
+  
 ```
 
 ## 使用方法
@@ -22,10 +37,6 @@ const monitor = new Monitor({
 });
 ```
 
-## 功能特性
-- 错误监控
-- 性能监控
-- 用户行为监控
 
 ## 项目架构
 monitor-sdk/</br>
