@@ -1,3 +1,3 @@
-import { PerformanceMonitor } from "./performance";
+import { ModernPerformanceMonitorTest } from './test';
 
-export default PerformanceMonitor;
+export const PerformanceMonitor = ModernPerformanceMonitorTest;
