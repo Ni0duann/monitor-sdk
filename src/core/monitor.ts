@@ -1,6 +1,6 @@
 //导入类型定义
-import { PerformanceMonitor } from '../plugins/performance';
 import { MonitorOptions, MonitorEvent } from './types';
+import  performance  from '../plugins/performance';
 
 export class Monitor {
   
@@ -25,7 +25,8 @@ export class Monitor {
     // reportData({ url: this.options.reportUrl, data: this.queue, delay: this.options.delay }); 
     
     // 初始化性能监控
-    PerformanceMonitor.init();
+    new performance();
+    
   }
 
 }
