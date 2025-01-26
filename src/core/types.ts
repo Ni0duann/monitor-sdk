@@ -3,6 +3,7 @@ export interface MonitorOptions {
   delay?: number; // 上报延迟
 }
 
+
 // 定义监控事件接口
 export interface MonitorEvent {
   type: string; // 事件类型
