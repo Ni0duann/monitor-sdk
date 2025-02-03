@@ -1,10 +1,14 @@
 // navigation.ts
-export function observeNavigationTiming(metrics: { navigation?: any }, observers: PerformanceObserver[]): void {
+export function observeNavigationTiming(metrics: Record<string, any>, observers: PerformanceObserver[]): void {
     try {
         const navigationObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries() as PerformanceNavigationTiming[];
             entries.forEach((entry) => {
                 if (entry.entryType === "navigation") {
+                    if (!metrics.navigation) {
+                        metrics.navigation = {};
+                    }
+
                     // 计算性能时间指标
                     const dnsLookupTime = entry.domainLookupEnd - entry.domainLookupStart;
                     const tcpConnectionTime = entry.connectEnd - entry.connectStart;
@@ -12,7 +16,7 @@ export function observeNavigationTiming(metrics: { navigation?: any }, observers
                     const domContentLoadedTime = entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart;
                     const loadTime = entry.loadEventEnd - entry.loadEventStart;
 
-                    metrics.navigation = {
+                    Object.assign(metrics, { 
                         // 重定向次数：在导航到当前页面之前发生的 HTTP 重定向的次数
                         redirectCount: entry.redirectCount,
                         // 开始获取资源的时间：浏览器开始获取当前页面资源的时间戳，这是整个导航过程的起始点
@@ -55,8 +59,9 @@ export function observeNavigationTiming(metrics: { navigation?: any }, observers
                         domContentLoadedTime,
                         // 页面加载时间：`load` 事件从开始到结束所花费的时间，即 load 事件结束时间减去 load 事件开始时间
                         loadTime
-                    };
-                    console.log("导航性能数据:", metrics.navigation);
+                    });
+
+                    console.log("导航性能数据:", metrics);
                 }
             });
         });
