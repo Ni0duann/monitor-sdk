@@ -1,3 +1,3 @@
-import { performance } from "./performance";
+import { PerformanceMonitor } from "./performance";
 
-export default performance;
+export default PerformanceMonitor;
