@@ -1,3 +1,4 @@
+
 /**
  * 检测当前页面是否为白屏
  * @param {number} [threshold=0.8] 判断为白屏的阈值（空白点占比），默认 80%
@@ -94,11 +95,11 @@ const isElementEmpty = (element: HTMLElement): boolean => {
     return !hasVisibleChildren;
 };
 
-
 // 新增可视化反馈方法
 const showWhiteScreenAlert = () => {
     console.error('⚠️ 检测到白屏！建议检查：\n- 资源加载状态\n- 错误边界\n- 网络连接');
-    window.alert('警告：检测到页面白屏，请联系技术支持'); // 生产环境建议替换为自定义模态框
+    window.alert('警告：检测到页面白屏，白屏错误信息已上传'); // 生产环境建议替换为自定义模态框
+    incrementWhiteScreenCountOnServer()
 };
 
 const logNormalStatus = () => {
@@ -145,6 +146,25 @@ const setupRouteListener = (threshold: number) => {
     window.addEventListener('popstate', handleRouteChange);
 };
 
+// 向后端发送请求，将白屏计数加 1
+const incrementWhiteScreenCountOnServer = async () => {
+    try {
+        const response = await fetch('http://localhost:5501/api/incrementWhiteScreenCount', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to increment white screen count on server');
+        }
+    } catch (error) {
+        console.error('Error incrementing white screen count:', error);
+    }
+};
+
 export const checkWhiteScreenWithFeedback = (threshold = 0.8) => {
     // 初始检测
     delayedDetect(threshold).then(isWhite => {
@@ -158,5 +178,6 @@ export const checkWhiteScreenWithFeedback = (threshold = 0.8) => {
     // 设置路由监听
     setupRouteListener(threshold);
 };
+
 
 export  {detectWhiteScreen};
