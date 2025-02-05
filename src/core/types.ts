@@ -20,3 +20,4 @@ export interface ErrorEvent extends MonitorEvent {
     colno?: number; // 列号
   };
 }
+
