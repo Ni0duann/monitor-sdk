@@ -5,6 +5,7 @@ interface reportDataInterface {
     delay?: any;
 }
 
+
 // 定义数据上报函数
 function reportData(options: reportDataInterface) {
     const { url, data, delay = 1000, time = Date.now() } = options;
@@ -30,7 +31,6 @@ function reportData(options: reportDataInterface) {
         });
     }, delay);
 }
-export default reportData
 
 // 示例调用
 // const endpoint = 'https://example.com/report';
