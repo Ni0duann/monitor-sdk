@@ -1,8 +1,8 @@
-import { observeLCP } from './lcp';
-import { observeFCP } from './fcp';
-import { observeResourceLoading } from './resource';
-import { observeNavigationTiming } from './navagation'; 
-import { checkWhiteScreenWithFeedback } from './whitescreen'
+import { observeLCP } from './performanceMetrics/lcp';
+import { observeFCP } from './performanceMetrics/fcp';
+import { observeResourceLoading } from './performanceMetrics/resource';
+import { observeNavigationTiming } from './performanceMetrics/navagation';
+import { checkWhiteScreenWithFeedback } from './performanceMetrics/whitescreen'
 
 export class PerformanceMonitor {
   private lcpMetrics: { lcp?: any } = {};
@@ -11,20 +11,23 @@ export class PerformanceMonitor {
   private navigationMetrics: Record<string, any> = {};
   private observers: PerformanceObserver[] = [];
   private whiteScreenCount = 0; // 白屏计数
-  private pv=0
-  private uv=0
+  // private pv = 0
+  // private uv = 0
 
   constructor() {
     this.init();
   }
-
 
   private init(): void {
     observeLCP(this.lcpMetrics, this.observers);
     observeFCP(this.fcpMetrics, this.observers);
     observeResourceLoading(this.resourceMetrics, this.observers);
     observeNavigationTiming(this.navigationMetrics, this.observers);
-    checkWhiteScreenWithFeedback();
+    checkWhiteScreenWithFeedback(0.8,this);
+  }
+
+  public AddWhiteScreenCount() {
+    this.whiteScreenCount++;
   }
 
   public getMetrics(): { // 修改返回结构为对象，方便后续上报

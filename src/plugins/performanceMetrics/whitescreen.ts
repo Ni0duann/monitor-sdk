@@ -99,7 +99,7 @@ const isElementEmpty = (element: HTMLElement): boolean => {
 const showWhiteScreenAlert = () => {
     console.error('⚠️ 检测到白屏！建议检查：\n- 资源加载状态\n- 错误边界\n- 网络连接');
     window.alert('警告：检测到页面白屏，白屏错误信息已上传'); // 生产环境建议替换为自定义模态框
-    incrementWhiteScreenCountOnServer()
+    // incrementWhiteScreenCountOnServer()
 };
 
 const logNormalStatus = () => {
@@ -147,28 +147,32 @@ const setupRouteListener = (threshold: number) => {
 };
 
 // 向后端发送请求，将白屏计数加 1
-const incrementWhiteScreenCountOnServer = async () => {
-    try {
-        const response = await fetch('http://localhost:5501/api/incrementWhiteScreenCount', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({})
-        });
+// const incrementWhiteScreenCountOnServer = async () => {
+//     try {
+//         const response = await fetch('http://localhost:5501/api/incrementWhiteScreenCount', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify({})
+//         });
 
-        if (!response.ok) {
-            throw new Error('Failed to increment white screen count on server');
-        }
-    } catch (error) {
-        console.error('Error incrementing white screen count:', error);
-    }
-};
+//         if (!response.ok) {
+//             throw new Error('Failed to increment white screen count on server');
+//         }
+//     } catch (error) {
+//         console.error('Error incrementing white screen count:', error);
+//     }
+// };
 
-export const checkWhiteScreenWithFeedback = (threshold = 0.8) => {
+import PerformanceMonitor from '../index';
+// 请根据实际的文件路径进行调整，如果文件结构有变化，需要修改导入路径
+
+export const checkWhiteScreenWithFeedback = (threshold = 0.8, performanceMonitor: PerformanceMonitor) => {
     // 初始检测
     delayedDetect(threshold).then(isWhite => {
         if (isWhite) {
+            performanceMonitor.AddWhiteScreenCount();
             showWhiteScreenAlert();
         } else {
             logNormalStatus();

@@ -1,6 +1,8 @@
 export interface MonitorOptions {
   reportUrl: string; // 上报地址
   delay?: number; // 上报延迟
+  trackRouting?: boolean;
+  routeChangeDebounce?: number;
 }
 
 // 定义监控事件接口
@@ -21,3 +23,15 @@ export interface ErrorEvent extends MonitorEvent {
   };
 }
 
+
+// 新增路由跳转事件类型
+export interface RouteChangeEvent {
+  type: 'route_change';
+  from: string;
+  to: string;
+  timestamp: number;
+  meta?: {
+    userAgent?: string;
+    resolution?: string;
+  };
+}
