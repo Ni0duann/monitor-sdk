@@ -51,7 +51,7 @@ export function observeResourceLoading(
                         metrics.resources!.push(resourceData);
 
                         // 打印资源的性能数据到控制台
-                        console.log("资源加载数据:", resourceData);
+                        console.log(`${resourceData.name}资源数据加载`, resourceData);
 
                         // 如果提供了回调函数，则调用它
                         if (onResourceData) {
