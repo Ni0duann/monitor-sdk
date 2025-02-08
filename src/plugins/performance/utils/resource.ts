@@ -1,5 +1,5 @@
 
-import { ResourceData } from "../type";
+import { ResourceData } from "../types";
 
 
 // 导出一个名为observeResourceLoading的函数，用于监控页面资源加载情况
