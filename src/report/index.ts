@@ -1,13 +1,8 @@
-interface reportDataInterface {
-    url: string;
-    data: any;
-    time?: Date;
-    delay?: any;
-}
+import { reportDataInterface } from './types';
 
 // 定义数据上报函数
 function reportData(options: reportDataInterface) {
-    const { url, data, delay = 1000, time = Date.now() } = options;
+    const { url, data, delay = 1000 } = options;
     setTimeout(() => {
         fetch(url, {
             method: 'POST',
@@ -31,14 +26,3 @@ function reportData(options: reportDataInterface) {
     }, delay);
 }
 export default reportData
-
-// 示例调用
-// const endpoint = 'https://example.com/report';
-// const data = {
-//     event: 'click',
-//     timestamp: Date.now(),
-//     additionalData: 'some data'
-// };
-// const delay = 5000; // 延时5秒上报
-
-// reportData(endpoint, data, delay);
