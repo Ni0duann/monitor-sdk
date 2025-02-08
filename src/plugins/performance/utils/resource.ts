@@ -1,14 +1,6 @@
 
+import { ResourceData } from "../type";
 
-// 定义资源数据的类型
-type ResourceData = {
-    name: string;
-    startTime: number;
-    requestStart:number;
-    responseEnd: number;
-    duration: number;
-    initiatorType: string;
-};
 
 // 导出一个名为observeResourceLoading的函数，用于监控页面资源加载情况
 export function observeResourceLoading(
