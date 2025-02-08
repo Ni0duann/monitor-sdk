@@ -1,7 +1,7 @@
 //导入类型定义
 import { MonitorOptions, MonitorEvent } from './types';
 import reportData from '../report/index'
-import PerformanceMonitor from '../plugins';
+import PerformanceMonitor from '../plugins/performanceMetrics';
 
 export class Monitor {
   private options: MonitorOptions;

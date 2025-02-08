@@ -132,12 +132,12 @@ const setupRouteListener = (threshold: number) => {
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
 
-    history.pushState = function(...args) {
+    history.pushState = function (...args) {
         originalPushState.apply(this, args);
         handleRouteChange();
     };
 
-    history.replaceState = function(...args) {
+    history.replaceState = function (...args) {
         originalReplaceState.apply(this, args);
         handleRouteChange();
     };
@@ -165,7 +165,7 @@ const setupRouteListener = (threshold: number) => {
 //     }
 // };
 
-import PerformanceMonitor from '../index';
+import PerformanceMonitor from './index';
 // 请根据实际的文件路径进行调整，如果文件结构有变化，需要修改导入路径
 
 export const checkWhiteScreenWithFeedback = (threshold = 0.8, performanceMonitor: PerformanceMonitor) => {
@@ -184,4 +184,4 @@ export const checkWhiteScreenWithFeedback = (threshold = 0.8, performanceMonitor
 };
 
 
-export  {detectWhiteScreen};
+export { detectWhiteScreen };

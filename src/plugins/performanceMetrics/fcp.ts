@@ -5,16 +5,12 @@ export function observeFCP(metrics: { fcp?: any[] }, observers: PerformanceObser
             metrics.fcp = [];
 
             entries.forEach((entry) => {
-                if (entry.entryType === "paint") {
+                if (entry.entryType === "paint" && entry.name === "first-contentful-paint") {
                     const paintMetric = {
                         name: entry.name,
                         startTime: entry.startTime,               
                     };
                     metrics.fcp!.push(paintMetric);
-                    // console.log(
-                    //     `The time to ${entry.name} was ${entry.startTime} milliseconds.`
-                    // );
-                    // 打印 LCP 数据到控制台
                     console.log("FCP 数据:", metrics.fcp);
                 }
             });
