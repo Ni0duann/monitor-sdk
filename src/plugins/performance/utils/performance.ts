@@ -1,5 +1,5 @@
 import { observeLCP } from './lcp';
-import { observeFCP } from './fcp';
+import { observePaint } from './fcp&fp';
 import { observeResourceLoading } from './resource';
 import { observeNavigationTiming } from './navagation'; 
 import { checkWhiteScreenWithFeedback } from './whitescreen'
@@ -21,7 +21,7 @@ export class PerformanceMonitor {
 
   private init(): void {
     observeLCP(this.lcpMetrics, this.observers);
-    observeFCP(this.fcpMetrics, this.observers);
+    observePaint(this.fcpMetrics, this.observers);
     observeResourceLoading(this.resourceMetrics, this.observers);
     observeNavigationTiming(this.navigationMetrics, this.observers);
     checkWhiteScreenWithFeedback();
