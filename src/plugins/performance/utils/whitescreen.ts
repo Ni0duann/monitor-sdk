@@ -98,7 +98,7 @@ const isElementEmpty = (element: HTMLElement): boolean => {
 // 新增可视化反馈方法
 const showWhiteScreenAlert = () => {
     console.error('⚠️ 检测到白屏！建议检查：\n- 资源加载状态\n- 错误边界\n- 网络连接');
-    window.alert('警告：检测到页面白屏，白屏错误信息已上传'); // 生产环境建议替换为自定义模态框
+    window.alert('警告：检测到页面白屏，白屏错误信息已上传');
     incrementWhiteScreenCountOnServer()
 };
 

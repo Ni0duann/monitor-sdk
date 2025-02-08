@@ -6,13 +6,11 @@ import { checkWhiteScreenWithFeedback } from './whitescreen'
 
 export class PerformanceMonitor {
   private lcpMetrics: { lcp?: any } = {};
-  private fcpMetrics: { fcp?: any[] } = {};
+  private PaintMetrics: { fcp?: any[] } = {};
   private resourceMetrics: { resources?: any[] } = {};
   private navigationMetrics: Record<string, any> = {};
   private observers: PerformanceObserver[] = [];
   private whiteScreenCount = 0; // 白屏计数
-  private pv=0
-  private uv=0
 
   constructor() {
     this.init();
@@ -21,7 +19,7 @@ export class PerformanceMonitor {
 
   private init(): void {
     observeLCP(this.lcpMetrics, this.observers);
-    observePaint(this.fcpMetrics, this.observers);
+    observePaint(this.PaintMetrics, this.observers);
     observeResourceLoading(this.resourceMetrics, this.observers);
     observeNavigationTiming(this.navigationMetrics, this.observers);
     checkWhiteScreenWithFeedback();
@@ -29,14 +27,14 @@ export class PerformanceMonitor {
 
   public getMetrics(): { // 修改返回结构为对象，方便后续上报
     lcp: any;
-    fcp: any[];
+    Paint: any[];
     resources: any[];
     navigation: any;
     whiteScreenCount: number;
   } {
     return {
       lcp: this.lcpMetrics,
-      fcp: this.fcpMetrics.fcp || [], // fcpMetrics内部存储的是数组，包含fp和fcp
+      Paint: this.PaintMetrics.fcp || [], // paint内部存储的是数组，包含fp和fcp
       resources: this.resourceMetrics.resources || [],
       navigation: this.navigationMetrics,
       whiteScreenCount: this.whiteScreenCount // 白屏计数
