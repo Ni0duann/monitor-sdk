@@ -10,15 +10,18 @@
  * @param observers 
  */
 
-export function observePaint(metrics: { fcp?: any[] }, observers: PerformanceObserver[]): void {
+export function observePaint(metrics: { fcp?: any, fp?: any }, observers: PerformanceObserver[]): void {
     try {
         const paintObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries() as PerformanceEntry[];
-            metrics.fcp = [];
 
             entries.forEach((entry) => {
                 if (entry.entryType === "paint") {
-                    console.log("FCP&FP:", entry);
+                    if (entry.name === "first-contentful-paint") {
+                        metrics.fcp = entry.startTime;
+                    } else if (entry.name === "first-paint") {
+                        metrics.fp = entry.startTime;
+                    }
                 }
             });
         });
