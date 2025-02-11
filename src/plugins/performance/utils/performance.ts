@@ -1,8 +1,8 @@
-import { observeLCP } from './lcp';
-import { observePaint } from './fcp&fp';
-import { observeResourceLoading } from './resource';
-import { observeNavigationTiming } from './navagation'; 
-import { checkWhiteScreenWithFeedback } from './whitescreen'
+import { observeLCP } from "./lcp";
+import { observePaint } from "./fcp&fp";
+import { observeResourceLoading } from "./resource";
+import { observeNavigationTiming } from "./navagation";
+import { checkWhiteScreenWithFeedback } from "./whitescreen";
 
 export class PerformanceMonitor {
   private lcpMetrics: { lcp?: any } = {};
@@ -16,7 +16,6 @@ export class PerformanceMonitor {
     this.init();
   }
 
-
   private init(): void {
     observeLCP(this.lcpMetrics, this.observers);
     observePaint(this.PaintMetrics, this.observers);
@@ -25,7 +24,8 @@ export class PerformanceMonitor {
     checkWhiteScreenWithFeedback();
   }
 
-  public getMetrics(): { // 修改返回结构为对象，方便后续上报
+  public getMetrics(): {
+    // 修改返回结构为对象，方便后续上报
     lcp: any;
     Paint: any[];
     resources: any[];
@@ -37,10 +37,9 @@ export class PerformanceMonitor {
       Paint: this.PaintMetrics.fcp || [], // paint内部存储的是数组，包含fp和fcp
       resources: this.resourceMetrics.resources || [],
       navigation: this.navigationMetrics,
-      whiteScreenCount: this.whiteScreenCount // 白屏计数
+      whiteScreenCount: this.whiteScreenCount, // 白屏计数
     };
   }
-
 }
 
 export default PerformanceMonitor; // 确保默认导出

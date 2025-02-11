@@ -6,7 +6,7 @@ import PerformanceMonitor from '../plugins/performance/index';
 export class Monitor {
   private options: MonitorOptions;
   private performanceMonitor: PerformanceMonitor; // 持有性能监控实例
-  private queue: MonitorEvent[] = [];
+  private queue: MonitorEvent[] = []; // 事件队列
 
   constructor(options: MonitorOptions) {
     this.options = {
@@ -26,7 +26,7 @@ export class Monitor {
       // 合并性能数据和其他数据（如错误）
       const reportPayload = {
         performance: this.performanceMonitor.getMetrics(),
-        errors: this.queue
+        event: this.queue
       };
 
       reportData({
@@ -35,7 +35,6 @@ export class Monitor {
         delay: 0 // 立即发送（外层已有setTimeout）
       });
     }, this.options.delay);
-
     // 其他初始化逻辑（如错误监听）
   }
 }
