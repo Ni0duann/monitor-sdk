@@ -1,4 +1,4 @@
-//发送停留时长数据到数据库 ✅ 等待修改通过监控路由跳转转入和转出来记录停留时长
+//发送停留时长数据到数据库 ✅ 等待修改通过监控路由跳转转入和转出来记录停留时长，并向数据库发送数据
 
 // const sendDurationData = async (pagePath: string, duration: number) => {
 //   try {

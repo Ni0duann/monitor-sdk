@@ -1,5 +1,5 @@
-import { getFlowData } from '@/api';
-import { FlowDataParams } from '@/interface';
+import { getFlowData } from '../api/index';
+import { FlowDataParams }  from '../api/interface';
 
 // 定义 PvUvData 类型
 type PvUvData = {
