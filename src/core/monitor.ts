@@ -5,6 +5,8 @@ import PerformanceMonitor from '../plugins/performance/index';
 import { PVTracker } from '../plugins/performance/utils/pvuv';
 import { pushFlowData } from '../api/index';
 
+
+
 export class Monitor {
   private options: MonitorOptions;
   private performanceMonitor: PerformanceMonitor; // 持有性能监控实例
@@ -35,8 +37,6 @@ export class Monitor {
       // 可添加重试逻辑
     }
   }
-  
-
 
   //初始化会发送数据到数据库
   private init(): void {
