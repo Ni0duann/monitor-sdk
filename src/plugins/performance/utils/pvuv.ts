@@ -1,7 +1,7 @@
 // src/modules/pvTracker.ts
 type PVConfig = {
-    reportUrl: string;
-    reportHandler: (data: any) => void;
+    // reportUrl: string;
+    reportHandler: (pagePath: string, dataType: 'pv' | 'uv') => Promise<void>;
 };
 
 export class PVTracker {
@@ -14,8 +14,8 @@ export class PVTracker {
     
     private setup() {
         const trackPV = () => {
-            const currentUrl = window.location.href;
-            this.sendPVData(currentUrl);
+            const pagePath = this.getNormalizedPath(); // 获取标准化路径
+            this.sendPVData(pagePath);
         };
 
         // 监听浏览器前进/后退
@@ -40,14 +40,15 @@ export class PVTracker {
         };
     }
 
-    private sendPVData(url: string) {
-        this.config.reportHandler({
-            url: this.config.reportUrl,
-            data: {
-                url: url,
-                dataType: 'pv'
-            },
-            delay: 0
+    private getNormalizedPath(): string {
+        // 获取标准化路径（可根据需要调整）
+        return `${window.location.pathname}${window.location.search}`;
+    }
+
+    private sendPVData(pagePath: string) {
+        // 直接调用处理函数并传递参数
+        this.config.reportHandler(pagePath, 'pv').catch(error => {
+            console.error('PV数据上报失败:', error);
         });
     }
 }

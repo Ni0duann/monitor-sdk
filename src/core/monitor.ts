@@ -3,6 +3,7 @@ import { MonitorOptions, MonitorEvent } from './types';
 import reportData from '../report/index'
 import PerformanceMonitor from '../plugins/performance/index';
 import { PVTracker } from '../plugins/performance/utils/pvuv';
+import { pushFlowData } from '../api/index';
 
 export class Monitor {
   private options: MonitorOptions;
@@ -16,19 +17,25 @@ export class Monitor {
       ...options
     };
     this.performanceMonitor = new PerformanceMonitor(); // 初始化性能监控
-    
+    this.init();
     // 初始化PV追踪
     this.pvTracker = new PVTracker({
-      reportUrl: this.options.reportUrl,
       reportHandler: this.handlePVReport.bind(this)
+      
     });
-    this.init();
   }
 
   // 统一处理PV上报
-  private handlePVReport(data: any) {
-    reportData(data); // 使用统一的reportData方法
+  private async handlePVReport(pagePath: string) {
+    try {
+      await pushFlowData(pagePath, 'pv');
+      console.log('PV数据上报成功');
+    } catch (error) {
+      console.error('PV数据上报失败:', error);
+      // 可添加重试逻辑
+    }
   }
+  
 
 
   //初始化会发送数据到数据库
