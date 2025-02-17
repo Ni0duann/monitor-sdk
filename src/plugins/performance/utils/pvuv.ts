@@ -1,6 +1,7 @@
 // src/modules/pvTracker.ts
 // 引入 pushFlowData 函数
 import { pushFlowData } from '@/api/index'; // 请替换为实际的 API 模块路径
+import { getOperatingSystem, getBrowserName, getDeviceType } from '@/api/commonInfo';
 
 export class PVTracker {
     constructor() {
@@ -42,8 +43,11 @@ export class PVTracker {
     }
 
     private async sendPVData(pagePath: string) {
+        const os = getOperatingSystem();
+        const browser = getBrowserName();
+        const deviceType = getDeviceType();
         try {
-            await pushFlowData(pagePath, 'pv');
+            await pushFlowData(pagePath, 'pv', os, browser, deviceType);
             console.log('PV数据上报成功');
         } catch (error) {
             console.error('PV数据上报失败:', error);

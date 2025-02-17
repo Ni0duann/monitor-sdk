@@ -1,5 +1,7 @@
 // 与服务端发送或接受数据的各API接口调用函数
 
+
+
 const BASE_URL = 'http://localhost:5500';
 
 // 导出数据类型接口
@@ -55,8 +57,14 @@ export async function getWhiteScreenCount(pageUrl: string, rangeTime?: number) {
 }
 
 // 5. 流量数据上报
-export async function pushFlowData(pagePath: string, dataType: 'pv' | 'uv') {
-    return fetchAPI<{ success: boolean }>('/api/push_flowData', 'POST', { pagePath, dataType });
+export async function pushFlowData(pagePath: string, dataType: 'pv' | 'uv', os: string, browser: string, deviceType: string) {
+    return fetchAPI<{ success: boolean }>('/api/push_flowData', 'POST', {
+        pagePath,
+        dataType,
+        os,
+        browser,
+        deviceType
+});
 }
 
 // 6. 获取流量数据
