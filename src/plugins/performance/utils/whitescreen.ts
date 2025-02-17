@@ -1,11 +1,15 @@
 import { reportWhiteScreen} from '@/api/index'; 
 import {WhiteScreenReport } from '@/api/interface';
 
+
 /**
  * 检测当前页面是否为白屏
  * @param {number} [threshold=0.8] 判断为白屏的阈值（空白点占比），默认 80%
  * @returns {boolean} 是否为白屏
  */
+// 标志位，用于记录是否已经提示过白屏
+let hasReportedWhiteScreen = false;
+
 const detectWhiteScreen = (threshold = 0.8): boolean => {
     // 获取视口尺寸
     const viewportWidth = window.innerWidth;
@@ -99,6 +103,7 @@ const isElementEmpty = (element: HTMLElement): boolean => {
 
 // 新增可视化反馈方法
 const showWhiteScreenAlert = async () => {
+    if (hasReportedWhiteScreen) return; // 如果已经提示过白屏，直接返回
     console.error('⚠️ 检测到白屏！建议检查：\n- 资源加载状态\n- 错误边界\n- 网络连接');
     window.alert('警告：检测到页面白屏，白屏错误信息已上传');
     // incrementWhiteScreenCountOnServer();
@@ -139,6 +144,7 @@ const delayedDetect = (threshold: number, delay = 3000): Promise<boolean> => {
 // 监听路由变化
 const setupRouteListener = (threshold: number) => {
     const handleRouteChange = () => {
+        hasReportedWhiteScreen = false; // 路由跳转时重置标志位
         delayedDetect(threshold).then(isWhite => {
             if (isWhite) {
                 showWhiteScreenAlert();
