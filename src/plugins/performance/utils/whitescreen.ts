@@ -1,15 +1,14 @@
-import { reportWhiteScreen} from '@/api/index'; 
-import {WhiteScreenReport } from '@/api/interface';
+import { reportWhiteScreen } from '@/api/index';
+import { WhiteScreenReport } from '@/api/interface';
 
+// 标志位，用于记录是否已经提示过白屏
+let hasReportedWhiteScreen = false;
 
 /**
  * 检测当前页面是否为白屏
  * @param {number} [threshold=0.8] 判断为白屏的阈值（空白点占比），默认 80%
  * @returns {boolean} 是否为白屏
  */
-// 标志位，用于记录是否已经提示过白屏
-let hasReportedWhiteScreen = false;
-
 const detectWhiteScreen = (threshold = 0.8): boolean => {
     // 获取视口尺寸
     const viewportWidth = window.innerWidth;
@@ -103,13 +102,15 @@ const isElementEmpty = (element: HTMLElement): boolean => {
 
 // 新增可视化反馈方法
 const showWhiteScreenAlert = async () => {
+    console.log('进入 showWhiteScreenAlert，hasReportedWhiteScreen:', hasReportedWhiteScreen);
     if (hasReportedWhiteScreen) return; // 如果已经提示过白屏，直接返回
+    hasReportedWhiteScreen = true; // 标记为已经提示过白屏
     console.error('⚠️ 检测到白屏！建议检查：\n- 资源加载状态\n- 错误边界\n- 网络连接');
     window.alert('警告：检测到页面白屏，白屏错误信息已上传');
     // incrementWhiteScreenCountOnServer();
     // 调用 reportWhiteScreen 函数上报白屏信息
     const pageUrl = window.location.href;
-    const browser = navigator.userAgent;
+    const browser = getBrowserName();
     const os = getOperatingSystem();
     const deviceType = getDeviceType();
     const reportData: WhiteScreenReport = {
@@ -144,6 +145,7 @@ const delayedDetect = (threshold: number, delay = 3000): Promise<boolean> => {
 // 监听路由变化
 const setupRouteListener = (threshold: number) => {
     const handleRouteChange = () => {
+        console.log('进入 handleRouteChange，重置 hasReportedWhiteScreen 为 false');
         hasReportedWhiteScreen = false; // 路由跳转时重置标志位
         delayedDetect(threshold).then(isWhite => {
             if (isWhite) {
@@ -159,37 +161,23 @@ const setupRouteListener = (threshold: number) => {
     const originalReplaceState = history.replaceState;
 
     history.pushState = function (...args) {
+        console.log('pushState 被调用，触发 handleRouteChange');
         originalPushState.apply(this, args);
         handleRouteChange();
     };
 
     history.replaceState = function (...args) {
+        console.log('replaceState 被调用，触发 handleRouteChange');
         originalReplaceState.apply(this, args);
         handleRouteChange();
     };
 
     // 监听popstate
-    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('popstate', () => {
+        console.log('popstate 事件触发，触发 handleRouteChange');
+        handleRouteChange();
+    });
 };
-
-// 向后端发送请求，将白屏计数加 1
-// const incrementWhiteScreenCountOnServer = async () => {
-//     try {
-//         const response = await fetch('http://localhost:5501/api/incrementWhiteScreenCount', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({})
-//         });
-
-//         if (!response.ok) {
-//             throw new Error('Failed to increment white screen count on server');
-//         }
-//     } catch (error) {
-//         console.error('Error incrementing white screen count:', error);
-//     }
-// };
 
 // 获取操作系统信息
 const getOperatingSystem = () => {
@@ -199,6 +187,26 @@ const getOperatingSystem = () => {
     if (userAgent.indexOf('Linux') !== -1) return 'Linux';
     if (userAgent.indexOf('Android') !== -1) return 'Android';
     if (userAgent.indexOf('iOS') !== -1) return 'iOS';
+    return 'Unknown';
+};
+
+// 获取浏览器名称
+const getBrowserName = () => {
+    const userAgent = navigator.userAgent;
+    if (userAgent.indexOf('Chrome') !== -1) {
+        return 'Chrome';
+    } else if (userAgent.indexOf('Firefox') !== -1) {
+        return 'Firefox';
+    } else if (userAgent.indexOf('Safari') !== -1) {
+        // 需要排除 Chrome，因为 Chrome 的 userAgent 中也包含 Safari
+        if (userAgent.indexOf('Chrome') === -1) {
+            return 'Safari';
+        }
+    } else if (userAgent.indexOf('Edge') !== -1) {
+        return 'Edge';
+    } else if (userAgent.indexOf('MSIE') !== -1 || userAgent.indexOf('Trident/') !== -1) {
+        return 'Internet Explorer';
+    }
     return 'Unknown';
 };
 
