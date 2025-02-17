@@ -28,6 +28,9 @@ export class PVTracker {
         // 装饰pushState方法
         history.pushState = (...args) => {
             const result = originalPushState.apply(history, args);
+            const pagePath = this.getNormalizedPath(); // 获取标准化路径
+                 // 添加打印语句
+            console.log(`路由跳转到: ${pagePath}`);
             trackPV();
             return result;
         };

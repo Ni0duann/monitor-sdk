@@ -26,12 +26,12 @@ export class PerformanceMonitor {
 
   public getMetrics(): {
     // 修改返回结构为对象，方便后续上报
-    lcp: any;
-    fcp: any;
-    fp: any;
-    resources: any[];
-    navigation: any;
-    whiteScreenCount: number;
+    lcp?: any;
+    fcp?: any;
+    fp?: any;
+    resources?: any[];
+    navigation?: any;
+    whiteScreenCount?: number;
   } {
     return {
       fcp: this.PaintMetrics.fcp,
