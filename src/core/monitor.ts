@@ -16,7 +16,7 @@ export class Monitor {
       delay: 1000,
       ...options
     };
-    this.performanceMonitor = new PerformanceMonitor(); // 初始化性能监控
+    this.performanceMonitor = new PerformanceMonitor(); // 创建性能监控实例
     this.init();
     // 初始化PV追踪
     this.pvTracker = new PVTracker({
@@ -62,6 +62,8 @@ export class Monitor {
       //   delay: 0 // 立即发送（外层已有setTimeout）
       // });
     }, this.options.delay);
+
+    
     // 其他初始化逻辑（如错误监听）
   }
 
