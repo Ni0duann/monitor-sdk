@@ -2,7 +2,7 @@ import { reportWhiteScreen } from '@/api/index';
 import { WhiteScreenReport } from '@/api/interface';
 import { getOperatingSystem, getBrowserName, getDeviceType } from '@/api/commonInfo';
 
-// 标志位，用于记录是否已经提示过白屏
+// 标志位，用于记录是否已经提示过白屏,避免重复检测
 let hasReportedWhiteScreen = false;
 
 /**
@@ -110,7 +110,7 @@ const showWhiteScreenAlert = async () => {
     window.alert('警告：检测到页面白屏，白屏错误信息已上传');
     // incrementWhiteScreenCountOnServer();
     // 调用 reportWhiteScreen 函数上报白屏信息
-    const pageUrl = window.location.href;
+    const pageUrl = getNormalizedPath();
     const browser = getBrowserName();
     const os = getOperatingSystem();
     const deviceType = getDeviceType();
@@ -162,22 +162,24 @@ const setupRouteListener = (threshold: number) => {
     const originalReplaceState = history.replaceState;
 
     history.pushState = function (...args) {
-        console.log('pushState 被调用，触发 handleRouteChange');
         originalPushState.apply(this, args);
         handleRouteChange();
     };
 
     history.replaceState = function (...args) {
-        console.log('replaceState 被调用，触发 handleRouteChange');
         originalReplaceState.apply(this, args);
         handleRouteChange();
     };
 
     // 监听popstate
     window.addEventListener('popstate', () => {
-        console.log('popstate 事件触发，触发 handleRouteChange');
         handleRouteChange();
     });
+};
+
+// 定义 getNormalizedPath 方法
+const getNormalizedPath = (): string => {
+    return `${window.location.pathname}${window.location.search}`;
 };
 
 export const checkWhiteScreenWithFeedback = (threshold = 0.8) => {
