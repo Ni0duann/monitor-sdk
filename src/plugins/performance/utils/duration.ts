@@ -1,15 +1,11 @@
-import { DurationData } from '@/api/interface'
-
-type DurationConfig = {
-    reportHandler: (data: DurationData) => Promise<void>;
-};
+// 引入 pushDuration 函数
+import { pushDuration } from '@/api/index';
+import { DurationData } from '@/api/interface';
 
 export class DurationTracker {
-    private config: DurationConfig;
     private lastPage: { path: string; startTime: number };
 
-    constructor(config: DurationConfig) {
-        this.config = config;
+    constructor() {
         this.lastPage = {
             path: this.getNormalizedPath(),
             startTime: Date.now(),
@@ -86,9 +82,12 @@ export class DurationTracker {
         return `${window.location.pathname}${window.location.search}`;
     }
 
-    private sendDurationData(data: DurationData) {
-        this.config.reportHandler(data).catch(error => {
+    private async sendDurationData(data: DurationData) {
+        try {
+            await pushDuration(data);
+            console.log("停留时长上报成功");
+        } catch (error) {
             console.error("停留时长上报失败:", error);
-        });
+        }
     }
 }

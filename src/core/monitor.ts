@@ -2,20 +2,20 @@
 import { MonitorOptions, MonitorEvent } from './types';
 import reportData from '../report/index'
 import PerformanceMonitor from '@/plugins/performance/index';
-//引入接口定义
-import { DurationData } from '@/api/interface';
+// //引入接口定义
+// import { DurationData } from '@/api/interface';
 //引入pvuv和停留时长监控类
 import { PVTracker } from '@/plugins/performance/utils/pvuv';
 import { DurationTracker } from '@/plugins/performance/utils/duration';
-//引入网络请求API
-import { pushFlowData,pushDuration } from '@/api/index';
+// //引入网络请求API
+// import { pushFlowData,pushDuration } from '@/api/index';
 
 export class Monitor {
   private options: MonitorOptions;
   private performanceMonitor: PerformanceMonitor; // 持有性能监控实例
   private queue: MonitorEvent[] = []; // 事件队列
-  private pvTracker?: PVTracker; // 添加PV追踪实例
-  private durationTracker!: DurationTracker; // 添加 DurationTracker 实例
+  // private pvTracker?: PVTracker; // 添加PV追踪实例
+  // private durationTracker!: DurationTracker; // 添加 DurationTracker 实例
 
   constructor(options: MonitorOptions) {
     this.options = {
@@ -28,8 +28,6 @@ export class Monitor {
 
     this.init();
   }
-
-
 
   //初始化会发送数据到数据库
   private init(): void {

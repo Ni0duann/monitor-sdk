@@ -4,6 +4,7 @@ import { observeResourceLoading } from "./resource";
 import { observeNavigationTiming } from "./navagation";
 import { checkWhiteScreenWithFeedback } from "./whitescreen";
 import { PVTracker } from "./pvuv";
+import { DurationTracker } from "./duration";
 
 export class PerformanceMonitor {
   private lcpMetrics: { lcp?: any } = {};
@@ -13,12 +14,13 @@ export class PerformanceMonitor {
   private observers: PerformanceObserver[] = [];
   private whiteScreenCount = 0; // 白屏计数
   private pvTracker: PVTracker; // 添加 PVTracker 实例
+  private durationTracker: DurationTracker; // 添加 DurationTracker 实例
 
   constructor() {
     this.pvTracker = new PVTracker(); // 初始化 PVTracker
+    this.durationTracker = new DurationTracker(); // 初始化 DurationTracker
     this.init();
   }
-
 
   private init(): void {
     observeLCP(this.lcpMetrics, this.observers);
