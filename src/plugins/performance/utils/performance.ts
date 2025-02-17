@@ -12,7 +12,7 @@ export class PerformanceMonitor {
   private resourceMetrics: { resources?: any[] } = {};
   private navigationMetrics: Record<string, any> = {};
   private observers: PerformanceObserver[] = [];
-  private whiteScreenCount = 0; // 白屏计数
+  // private whiteScreenCount = 0; // 白屏计数
   private pvTracker: PVTracker; // 添加 PVTracker 实例
   private durationTracker: DurationTracker; // 添加 DurationTracker 实例
 
@@ -37,7 +37,7 @@ export class PerformanceMonitor {
     fp?: any;
     resources?: any[];
     navigation?: any;
-    whiteScreenCount?: number;
+    // whiteScreenCount?: number;
   } {
     return {
       fcp: this.PaintMetrics.fcp,
@@ -45,7 +45,7 @@ export class PerformanceMonitor {
       lcp: this.lcpMetrics.lcp,
       resources: this.resourceMetrics.resources || [],
       navigation: this.navigationMetrics,
-      whiteScreenCount: this.whiteScreenCount, // 白屏计数
+      // whiteScreenCount: this.whiteScreenCount, // 白屏计数
     };
   }
 }
