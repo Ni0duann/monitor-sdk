@@ -1,41 +1,34 @@
 // src/modules/pvTracker.ts
-type PVConfig = {
-    // reportUrl: string;
-    reportHandler: (pagePath: string, dataType: 'pv' | 'uv') => Promise<void>;
-};
+// 引入 pushFlowData 函数
+import { pushFlowData } from '@/api/index'; // 请替换为实际的 API 模块路径
 
 export class PVTracker {
-    private config: PVConfig;
-
-    constructor(config: PVConfig) {
-        this.config = config;
+    constructor() {
+        // 初始化时上报一次 PV 数据
+        const initialPagePath = this.getNormalizedPath();
+        this.sendPVData(initialPagePath);
         this.setup();
     }
-    
+
     private setup() {
         const trackPV = () => {
             const pagePath = this.getNormalizedPath(); // 获取标准化路径
             this.sendPVData(pagePath);
         };
 
-        // 监听浏览器前进/后退
-        window.addEventListener('popstate', trackPV);
-
-        // 保存原始方法引用
         const originalPushState = history.pushState;
         const originalReplaceState = history.replaceState;
 
-        // 装饰pushState方法
+        // 装饰 pushState 方法
         history.pushState = (...args) => {
             const result = originalPushState.apply(history, args);
             const pagePath = this.getNormalizedPath(); // 获取标准化路径
-                 // 添加打印语句
             console.log(`路由跳转到: ${pagePath}`);
             trackPV();
             return result;
         };
 
-        // 装饰replaceState方法
+        // 装饰 replaceState 方法
         history.replaceState = (...args) => {
             const result = originalReplaceState.apply(history, args);
             trackPV();
@@ -48,10 +41,12 @@ export class PVTracker {
         return `${window.location.pathname}${window.location.search}`;
     }
 
-    private sendPVData(pagePath: string) {
-        // 直接调用处理函数并传递参数
-        this.config.reportHandler(pagePath, 'pv').catch(error => {
+    private async sendPVData(pagePath: string) {
+        try {
+            await pushFlowData(pagePath, 'pv');
+            console.log('PV数据上报成功');
+        } catch (error) {
             console.error('PV数据上报失败:', error);
-        });
+        }
     }
 }

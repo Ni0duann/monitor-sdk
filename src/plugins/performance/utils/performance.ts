@@ -3,6 +3,7 @@ import { observePaint } from "./fcp&fp";
 import { observeResourceLoading } from "./resource";
 import { observeNavigationTiming } from "./navagation";
 import { checkWhiteScreenWithFeedback } from "./whitescreen";
+import { PVTracker } from "./pvuv";
 
 export class PerformanceMonitor {
   private lcpMetrics: { lcp?: any } = {};
@@ -11,10 +12,13 @@ export class PerformanceMonitor {
   private navigationMetrics: Record<string, any> = {};
   private observers: PerformanceObserver[] = [];
   private whiteScreenCount = 0; // 白屏计数
+  private pvTracker: PVTracker; // 添加 PVTracker 实例
 
   constructor() {
+    this.pvTracker = new PVTracker(); // 初始化 PVTracker
     this.init();
   }
+
 
   private init(): void {
     observeLCP(this.lcpMetrics, this.observers);
