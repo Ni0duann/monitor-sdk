@@ -2,13 +2,6 @@
 import { MonitorOptions, MonitorEvent } from './types';
 import reportData from '../report/index'
 import PerformanceMonitor from '@/plugins/performance/index';
-// //引入接口定义
-// import { DurationData } from '@/api/interface';
-//引入pvuv和停留时长监控类
-import { PVTracker } from '@/plugins/performance/utils/pvuv';
-import { DurationTracker } from '@/plugins/performance/utils/duration';
-// //引入网络请求API
-// import { pushFlowData,pushDuration } from '@/api/index';
 
 export class Monitor {
   private options: MonitorOptions;
@@ -33,37 +26,6 @@ export class Monitor {
   private init(): void {
     console.log('初始化监听。。。');
 
-    // // 处理pvuv上报
-    // const handlePVReport = async (pagePath: string) => {
-    //   try {
-    //     await pushFlowData(pagePath, 'pv');
-    //     console.log('PV数据上报成功@@@@@@@');
-    //   } catch (error) {
-    //     console.error('PV数据上报失败:', error);
-    //     // 可添加重试逻辑
-    //   }
-    // };
-
-    // // 处理页面停留时长上报
-    // const handleDurationReport = async (data: DurationData) => {
-    //   try {
-    //     await pushDuration({ pagePath: data.pagePath, duration: data.duration }); // 假设 pushFlowData 支持上报停留时长
-    //     console.log('页面停留时长数据上报成功@@@@@@@@@@@');
-    //   } catch (error) {
-    //     console.error('页面停留时长数据上报失败:', error);
-    //   }
-    // };
-
-    // // 初始化pvuv追踪
-    // this.pvTracker = new PVTracker({
-    //   reportHandler: handlePVReport
-    // });
-
-    // //初始化 Duration追踪
-    // this.durationTracker = new DurationTracker({
-    //   reportHandler: handleDurationReport
-    // });
-
     // 延迟上报（确保性能监控数据已收集）
     setTimeout(async () => {
 
@@ -72,22 +34,12 @@ export class Monitor {
         performance: this.performanceMonitor.getMetrics(),
         event: this.queue
       };
-
-      // // 获取当前页面路径,用以记录pvuv和页面停留时长的页面路径.
-      // const pagePath = window.location.pathname + window.location.search;
-      // try {
-      //   // 调用 pushFlowData 函数进行 PV 数据上报
-      //   await pushFlowData(pagePath, 'pv');
-      //   console.log('PV数据上报成功111');
-      // } catch (error) {
-      //   console.error('PV数据上报失败222:', error);
-      // }
-
-      // reportData({
-      //   url: this.options.reportUrl,
-      //   data: reportPvuv, // 包含性能数据+其他数据
-      //   delay: 0 // 立即发送（外层已有setTimeout）
-      // });
+      
+      reportData({
+        url: this.options.reportUrl,
+        data: reportPvuv, // 包含性能数据+其他数据
+        delay: 0 // 立即发送（外层已有setTimeout）
+      });
 
     }, this.options.delay);
 

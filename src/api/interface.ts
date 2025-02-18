@@ -1,13 +1,22 @@
 // 数据类型接口定义
 
+// export interface PerformanceData {
+//     performance: {
+//         ttfb: number;
+//         lcp: number;
+//         fcp: number;
+//         whiteScreenCount?: number;
+//     };
+//     errors?: object;
+// }
+
 export interface PerformanceData {
-    performance: {
-        ttfb: number;
-        lcpRenderTime: number;
-        fcpStartTime: number;
-        whiteScreenCount?: number;
-    };
-    errors?: object;
+    fcp?: number;
+    fp?: number;
+    lcpRenderTime?: number;
+    redirectCount?: number;
+    ttfb?: number;
+    event?: any[]; // 事件队列
 }
 
 export interface QueryParams {
