@@ -1,6 +1,8 @@
+
+import { PerformanceData } from '../api/interface'
 export interface reportDataInterface {
     url: string;
-    data: dataInterface;
+    data: PerformanceData;
     time?: Date;
     delay?: any;
 }

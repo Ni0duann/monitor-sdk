@@ -1,3 +1,9 @@
+import { reportWhiteScreen } from '@/api/index';
+import { WhiteScreenReport } from '@/api/interface';
+import { getOperatingSystem, getBrowserName, getDeviceType } from '@/api/commonInfo';
+
+// 标志位，用于记录是否已经提示过白屏,避免重复检测
+let hasReportedWhiteScreen = false;
 
 /**
  * 检测当前页面是否为白屏
@@ -14,11 +20,11 @@ const detectWhiteScreen = (threshold = 0.8): boolean => {
 
     // 生成均匀分布的检测点坐标（包含视口中心+四个角落）
     const detectionPoints = [
-    /* 中心点 */[viewportWidth / 2, viewportHeight / 2],
-    /* 左上角 */[0, 0],
-    /* 右上角 */[viewportWidth - 1, 0], // 减1避免坐标越界
-    /* 左下角 */[0, viewportHeight - 1],
-    /* 右下角 */[viewportWidth - 1, viewportHeight - 1],
+        /* 中心点 */[viewportWidth / 2, viewportHeight / 2],
+        /* 左上角 */[0, 0],
+        /* 右上角 */[viewportWidth - 1, 0], // 减1避免坐标越界
+        /* 左下角 */[0, viewportHeight - 1],
+        /* 右下角 */[viewportWidth - 1, viewportHeight - 1],
     ];
 
     // 统计空白点数
@@ -96,10 +102,31 @@ const isElementEmpty = (element: HTMLElement): boolean => {
 };
 
 // 新增可视化反馈方法
-const showWhiteScreenAlert = () => {
+const showWhiteScreenAlert = async () => {
+    console.log('进入 showWhiteScreenAlert，hasReportedWhiteScreen:', hasReportedWhiteScreen);
+    if (hasReportedWhiteScreen) return; // 如果已经提示过白屏，直接返回
+    hasReportedWhiteScreen = true; // 标记为已经提示过白屏
     console.error('⚠️ 检测到白屏！建议检查：\n- 资源加载状态\n- 错误边界\n- 网络连接');
     window.alert('警告：检测到页面白屏，白屏错误信息已上传');
-    incrementWhiteScreenCountOnServer()
+    // incrementWhiteScreenCountOnServer();
+    // 调用 reportWhiteScreen 函数上报白屏信息
+    const pageUrl = getNormalizedPath();
+    const browser = getBrowserName();
+    const os = getOperatingSystem();
+    const deviceType = getDeviceType();
+    const reportData: WhiteScreenReport = {
+        pageUrl,
+        browser,
+        os,
+        device_type: deviceType
+    };
+    console.log('上报白屏信息@@@@@：', reportData);
+    try {
+        await reportWhiteScreen(reportData);
+        console.log('白屏信息上报成功');
+    } catch (error) {
+        console.error('白屏信息上报失败:', error);
+    }
 };
 
 const logNormalStatus = () => {
@@ -119,6 +146,8 @@ const delayedDetect = (threshold: number, delay = 3000): Promise<boolean> => {
 // 监听路由变化
 const setupRouteListener = (threshold: number) => {
     const handleRouteChange = () => {
+        console.log('进入 handleRouteChange，重置 hasReportedWhiteScreen 为 false');
+        hasReportedWhiteScreen = false; // 路由跳转时重置标志位
         delayedDetect(threshold).then(isWhite => {
             if (isWhite) {
                 showWhiteScreenAlert();
@@ -132,37 +161,25 @@ const setupRouteListener = (threshold: number) => {
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
 
-    history.pushState = function(...args) {
+    history.pushState = function (...args) {
         originalPushState.apply(this, args);
         handleRouteChange();
     };
 
-    history.replaceState = function(...args) {
+    history.replaceState = function (...args) {
         originalReplaceState.apply(this, args);
         handleRouteChange();
     };
 
     // 监听popstate
-    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('popstate', () => {
+        handleRouteChange();
+    });
 };
 
-// 向后端发送请求，将白屏计数加 1
-const incrementWhiteScreenCountOnServer = async () => {
-    try {
-        const response = await fetch('http://localhost:5501/api/incrementWhiteScreenCount', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({})
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to increment white screen count on server');
-        }
-    } catch (error) {
-        console.error('Error incrementing white screen count:', error);
-    }
+// 定义 getNormalizedPath 方法
+const getNormalizedPath = (): string => {
+    return `${window.location.pathname}${window.location.search}`;
 };
 
 export const checkWhiteScreenWithFeedback = (threshold = 0.8) => {
@@ -179,5 +196,4 @@ export const checkWhiteScreenWithFeedback = (threshold = 0.8) => {
     setupRouteListener(threshold);
 };
 
-
-export  {detectWhiteScreen};
+export { detectWhiteScreen };

@@ -15,13 +15,13 @@ export function observeLCP(metrics: { lcp?: any }, observers: PerformanceObserve
       entries.forEach((entry) => {
         if (entry.entryType === "largest-contentful-paint") {
           metrics.lcp = {
-            name: entry.name,
-            startTime: entry.startTime,
+            // name: entry.name,
+            // startTime: entry.startTime,
             renderTime: (entry as any).renderTime,
-            loadTime: (entry as any).loadTime,
-            size: (entry as any).size,
-            id: (entry as any).id,
-            url: (entry as any).url,
+            // loadTime: (entry as any).loadTime,
+            // size: (entry as any).size,
+            // id: (entry as any).id,
+            // url: (entry as any).url,
           };
           console.log("LCP 数据:", entry);
         }

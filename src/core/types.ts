@@ -21,3 +21,18 @@ export interface ErrorEvent extends MonitorEvent {
   };
 }
 
+export interface dataInterface {
+  fcp: number;
+  fp: number;
+  lcp: number;
+  resources: any[];
+  // 其他属性...
+  event: MonitorEvent[];
+}
+
+export interface reportDataInterface {
+  url: string;
+  data: dataInterface;
+  time?: Date;
+  delay?: any;
+}
