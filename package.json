@@ -1,8 +1,9 @@
 {
-  "name": "@ni0duann/monitor-sdk",
-  "version": "1.0.1",
+  "name": "monitor-trace",
+  "version": "1.0.0",
   "description": "前端监控SDK",
   "main": "dist/index.js",
+  
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -20,10 +21,10 @@
     "frontend",
     "sdk"
   ],
-  "author": "",
+  "author": "lirongrong,deng",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ni0duann/monitor-sdk.git"
+    "url": "git+https://github.com/LivingRoomcode/monitor-sdk"
   },
   "license": "MIT",
   "devDependencies": {
