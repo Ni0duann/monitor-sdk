@@ -30,13 +30,12 @@
 
 ## 使用方法
 ```typescript jacscript
-import Monitor from 'monitor-sdk';
+import Monitor from 'monitor-trace';
 
 const monitor = new Monitor({
   // 配置项
 });
 ```
-
 
 ## 项目架构
 monitor-sdk/</br>
