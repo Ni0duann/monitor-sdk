@@ -53,14 +53,14 @@ monitor-sdk/</br>
 │   │       ├── index.ts    // 性能监控入口</br>
 │   │       ├── types.ts    // 类型定义</br>
 │   │       └── utils/      // 工具函数</br>
-│   │           ├── duration.ts</br>
-│   │           ├── fcp&fp.ts</br>
-│   │           ├── lcp.ts</br>
-│   │           ├── navagation.ts</br>
-│   │           ├── performance.ts</br>
-│   │           ├── pvuv.ts</br>
-│   │           ├── resource.ts</br>
-│   │           └── whitescreen.ts</br>
+│   │           ├── duration.ts       // 页面加载时长监控</br>
+│   │           ├── fcp&fp.ts         // 首次内容绘制和首次绘制监控</br>
+│   │           ├── lcp.ts            // 最大内容绘制监控</br>
+│   │           ├── navagation.ts     // 页面导航性能监控</br>
+│   │           ├── performance.ts    // 综合性能指标监控</br>
+│   │           ├── pvuv.ts           // 页面访问量统计</br>
+│   │           ├── resource.ts       // 资源加载性能监控</br>
+│   │           └── whitescreen.ts    // 白屏检测</br>
 │   ├── report/              // 数据上报</br>
 │   │   ├── index.ts        // 上报入口</br>
 │   │   └── types.ts        // 类型定义</br>
