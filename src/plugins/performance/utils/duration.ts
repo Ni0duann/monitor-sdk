@@ -1,6 +1,7 @@
 // 引入 pushDuration 函数
 import { pushDuration } from '@/api/index';
 import { DurationData } from '@/api/interface';
+import { reportQueue } from './reportQueue';
 
 export class DurationTracker {
     private lastPage: { path: string; startTime: number };
@@ -88,11 +89,13 @@ export class DurationTracker {
     }
 
     private async sendDurationData(data: DurationData) {
-        try {
-            await pushDuration(data);
-            console.log("停留时长上报成功");
-        } catch (error) {
-            console.error("停留时长上报失败:", error);
-        }
+        reportQueue.addTask(async () => {
+            try {
+                await pushDuration(data);
+                console.log("[队列] 停留时长上报成功");
+            } catch (error) {
+                console.error("[队列] 停留时长上报失败:", error);
+            }
+        });
     }
 }

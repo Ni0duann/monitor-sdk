@@ -1,7 +1,9 @@
-// src/modules/pvTracker.ts
 // 引入 pushFlowData 函数
 import { pushFlowData } from '@/api/index'; // 请替换为实际的 API 模块路径
 import { getOperatingSystem, getBrowserName, getDeviceType } from '@/api/commonInfo';
+// import { getReportQueue } from './reportQueue';
+// const reportQueue = getReportQueue()
+import { reportQueue } from './reportQueue';
 
 export class PVTracker {
     constructor() {
@@ -43,14 +45,19 @@ export class PVTracker {
     }
 
     private async sendPVData(pagePath: string) {
+        console.log(`[PVTracker] 添加上报任务：${pagePath}`)
         const os = getOperatingSystem();
         const browser = getBrowserName();
         const deviceType = getDeviceType();
-        try {
-            await pushFlowData(pagePath, 'pv', os, browser, deviceType);
-            console.log('PV数据上报成功');
-        } catch (error) {
-            console.error('PV数据上报失败:', error);
-        }
+
+        // 将上报任务加入请求队列
+        reportQueue.addTask(async () => {
+            try {
+                await pushFlowData(pagePath, 'pv', os, browser, deviceType);
+                console.log('PV数据上报成功');
+            } catch (error) {
+                console.error('PV数据上报失败:', error);
+            }
+        });   
     }
 }

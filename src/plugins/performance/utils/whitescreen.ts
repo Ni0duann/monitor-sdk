@@ -1,6 +1,7 @@
 import { reportWhiteScreen } from '@/api/index';
 import { WhiteScreenReport } from '@/api/interface';
 import { getOperatingSystem, getBrowserName, getDeviceType } from '@/api/commonInfo';
+import { reportQueue } from './reportQueue';
 
 // 标志位，用于记录是否已经提示过白屏,避免重复检测
 let hasReportedWhiteScreen = false;
@@ -103,7 +104,7 @@ const isElementEmpty = (element: HTMLElement): boolean => {
 
 // 新增可视化反馈方法
 const showWhiteScreenAlert = async () => {
-    console.log('进入 showWhiteScreenAlert，hasReportedWhiteScreen:', hasReportedWhiteScreen);
+   
     if (hasReportedWhiteScreen) return; // 如果已经提示过白屏，直接返回
     hasReportedWhiteScreen = true; // 标记为已经提示过白屏
     console.error('⚠️ 检测到白屏！建议检查：\n- 资源加载状态\n- 错误边界\n- 网络连接');
@@ -120,13 +121,16 @@ const showWhiteScreenAlert = async () => {
         os,
         device_type: deviceType
     };
-    console.log('上报白屏信息@@@@@：', reportData);
-    try {
-        await reportWhiteScreen(reportData);
-        console.log('白屏信息上报成功');
-    } catch (error) {
-        console.error('白屏信息上报失败:', error);
-    }
+
+    reportQueue.addTask(async () => {
+        console.log(`[WhiteScreen] 添加上报任务`)
+        try {
+            await reportWhiteScreen(reportData);
+            console.log('白屏信息上报成功');
+        } catch (error) {
+            console.error('白屏信息上报失败:', error);
+        }
+    });
 };
 
 const logNormalStatus = () => {
