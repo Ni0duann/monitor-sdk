@@ -13,6 +13,7 @@ class ReportBatchQueue {
 
     constructor() {
         this.startTimer();
+        //页面关闭时的处理逻辑，确保在页面关闭前将队列中的任务上报。
         this.setupPageHideHandler();
     }
 
@@ -60,6 +61,7 @@ class ReportBatchQueue {
 
     // 核心方法：执行上报
     private async flush(): Promise<void> {
+        //this.isProcessing为true时，说明已有上报任务正在执行，不可重复
         if (this.isProcessing || this.queue.length === 0) {
             this.startTimer(); // 确保定时器持续运行
             return;
@@ -69,10 +71,13 @@ class ReportBatchQueue {
         this.cancelTimer();
 
         try {
+            //复制当前队列中的任务到 currentBatch 数组，并清空队列。
             const currentBatch = [...this.queue];
             this.queue = [];
 
             console.log(`[Queue] 开始批量上报，数量：${currentBatch.length}`);
+            //task() 是对 task 函数进行调用。由于 task 是一个返回 Promise 对象的函数，
+            // 调用 task() 就会执行这个函数，并返回一个 Promise 对象。
             await Promise.all(currentBatch.map(task => task()));
             console.log(`[Queue] 批量上报完成`);
         } catch (error) {
@@ -92,11 +97,14 @@ class ReportBatchQueue {
                 this.flush();
             }
         };
-
+    //如果页面变为不可见，就调用之前定义的 handler 函数，
+    // 检查队列中是否有未处理的任务并进行上报。
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') handler();
         });
+    //用户离开当前页面例如通过点击链接，关闭标签页等操作时，会触发pagehide事件
         window.addEventListener('pagehide', handler);
+    //在页面即将卸载（例如关闭窗口、刷新页面等操作）之前触发。
         window.addEventListener('beforeunload', handler);
     }
 }

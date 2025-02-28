@@ -60,7 +60,7 @@ const detectWhiteScreen = (threshold = 0.8): boolean => {
 };
 
 /**
- * 判断元素是否为可见状态
+ * 判断元素是否为可见状态（没有隐藏或者none，透明度大于0.01）
  */
 const isElementVisible = (element: HTMLElement): boolean => {
     const style = window.getComputedStyle(element);
@@ -147,7 +147,7 @@ const delayedDetect = (threshold: number, delay = 3000): Promise<boolean> => {
     });
 };
 
-// 监听路由变化
+// 监听路由变化，在路由发生变化时，重置白屏报告标志位，并进行白屏检测
 const setupRouteListener = (threshold: number) => {
     const handleRouteChange = () => {
         console.log('进入 handleRouteChange，重置 hasReportedWhiteScreen 为 false');
@@ -175,7 +175,7 @@ const setupRouteListener = (threshold: number) => {
         handleRouteChange();
     };
 
-    // 监听popstate
+    // 监听popstate（点击前进或后退都会触发）
     window.addEventListener('popstate', () => {
         handleRouteChange();
     });
