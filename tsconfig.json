@@ -10,6 +10,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
+      "baseUrl": ".", // 指定基础目录，这里表示项目根目录
+        "paths": {
+          "@/*": ["src/*"], 
+        }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "**/__tests__/*"]
